@@ -7,10 +7,6 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
 const inquirer = require("inquirer");
 
 const teamMembers = [];
@@ -21,12 +17,14 @@ inquirer.prompt([
     {
         type: "input",
         message: "What is the name of the team manager?",
-        name: "name"
+        name: "name",
+        validate: validateName
     },
     {
         type: "input",
         message: "What is the email of the team manager?",
-        name: "email"
+        name: "email",
+        validate: validateEmail
     }
 ]).then(answers => {
     const newManager = new Manager(answers.name, id, answers.email, 1)
@@ -59,17 +57,20 @@ const newEngineer = () => {
         {
             type: "input",
             message: "What is the engineer's name?",
-            name: "name"
+            name: "name",
+            validate: validateName
         },
         {
             type: "input",
             message: "What is the engineer's email?",
-            name: "email"
+            name: "email",
+            validate: validateEmail
         },
         {
             type: "input",
             message: "What is the engineer's GitHub username?",
-            name: "github"
+            name: "github",
+            validate: validateGitHub
         }
     ]).then(answers => {
         const newEngineer = new Engineer(answers.name, id, answers.email, answers.github)
@@ -84,17 +85,20 @@ const newIntern = () => {
         {
             type: "input",
             message: "What is the intern's name?",
-            name: "name"
+            name: "name",
+            validate: validateName
         },
         {
             type: "input",
             message: "What is the intern's email?",
-            name: "email"
+            name: "email",
+            validate: validateEmail
         },
         {
             type: "input",
             message: "What is the name of the intern's school?",
-            name: "school"
+            name: "school",
+            validate: validateSchool
         }
     ]).then(answers => {
         const newIntern = new Intern(answers.name, id, answers.email, answers.school)
@@ -111,28 +115,40 @@ function renderFunction() {
             throw err;
         }
     })
-
 }
 
+function validateName(input) {
+    if (!input) {
+        return "Please enter a name.";
+    } else {
+        return true;
+    }
+}
 
+function validateEmail(input) {
+    if (!input) {
+        return "Please enter an email address."
+    }  else if (!input.includes("@") || !input.includes(".")) {
+        return "Please enter a valid email address."
+    } else if (input.indexOf("@") > input.indexOf(".")) {
+        return "Please enter a valid email address."
+    } else {
+        return true;
+    }
+}
 
+function validateGitHub(input) {
+    if (!input) {
+        return "Please enter a GitHub username."
+    } else {
+        return true;
+    }
+}
 
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an 
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work!```
+function validateSchool(input) {
+    if (!input) {
+        return "Please enter a school."
+    } else {
+        return true;
+    }
+}

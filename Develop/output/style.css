@@ -1,0 +1,12 @@
+ .card-header {
+    color: white;
+    background-color: #428bca;
+}
+
+.employee-card {
+    background-color: #f9f9f9;
+} 
+
+.card {
+    box-shadow: 3px 4px rgba(0,0,0,0.2);
+}
