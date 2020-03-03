@@ -1,10 +1,10 @@
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-// const path = require("path");
-// const fs = require("fs");
-// const OUTPUT_DIR = path.resolve(__dirname, "output");
-// const outputPath = path.join(OUTPUT_DIR, "team.html");
+const path = require("path");
+const fs = require("fs");
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
 
@@ -32,7 +32,6 @@ inquirer.prompt([
     const newManager = new Manager(answers.name, id, answers.email, 1)
     id++;
     teamMembers.push(newManager)
-    console.log(teamMembers)
     newMember();
 })
 
@@ -50,7 +49,7 @@ const newMember = () => {
         } else if (answer.newMember === "Yes, an intern") {
             newIntern();
         } else {
-            return;
+            renderFunction();
         }
     })
 }
@@ -76,7 +75,6 @@ const newEngineer = () => {
         const newEngineer = new Engineer(answers.name, id, answers.email, answers.github)
         id++;
         teamMembers.push(newEngineer)
-        console.log(teamMembers)
         newMember();
     })
 }
@@ -102,11 +100,19 @@ const newIntern = () => {
         const newIntern = new Intern(answers.name, id, answers.email, answers.school)
         id++;
         teamMembers.push(newIntern)
-        console.log(teamMembers)
         newMember();
     })
 }
 
+function renderFunction() {
+    let page = render(teamMembers);
+    fs.writeFile(outputPath, page, function(err) {
+        if (err) {
+            throw err;
+        }
+    })
+
+}
 
 
 
