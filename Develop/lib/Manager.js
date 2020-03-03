@@ -9,3 +9,5 @@ class Manager extends Employee {
         return this.constructor.name;
     }
 }
+
+module.exports = Manager;

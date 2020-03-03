@@ -12,3 +12,5 @@ class Engineer extends Employee {
         return this.constructor.name;
     }
 }
+
+module.exports = Engineer;
